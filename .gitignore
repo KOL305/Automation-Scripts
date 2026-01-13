@@ -1,3 +1,4 @@
-#
-/scripts/*
+# Ignore virtual environment folder and scripts directory contents
 /venv/
+/scripts/*
+!/scripts/.gitkeep
