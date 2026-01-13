@@ -27,7 +27,7 @@ spacer_entry = [("SPACER", SPACER_DURATION, 1.0)]
 FILES_TO_RUN = SCRIPTS[0:SPACER_LOCATION] + spacer_entry + SCRIPTS[SPACER_LOCATION:]
 
 # ========== General Settings ==============
-REPEAT_COUNT = 30
+REPEAT_COUNT = 15  # How many times to repeat the entire sequence
 MOVE_DURATION = 0.01  # For mouse movements
 BUTTON_HOLD_TIME = 0.01 # Only used for Legacy 'click'/'press' commands
 # ==========================================
