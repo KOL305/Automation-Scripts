@@ -26,6 +26,7 @@ At the top of `macro_runner.py` are configurable settings:
 - The `General Settings` tab has more available configuration options.
 
 ### RUNNING YOUR MACRO
+- Make sure your virtual environment is still active (`venv/Scripts/activate`)
 - Run `$ python macro_runner.py` to run your script.
     - *Note: this script will take full control of your mouse and keyboard so your laptop will be rendered unusable*
 - You can always emergency exit the current script by moving your mouse to a corner of your computer, but must `ctrl+c` in VScode to exit the full sequence.
