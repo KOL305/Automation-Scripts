@@ -12,10 +12,10 @@ import math
 # 1. Define your standard scripts here
 # Format: ("filename", action_delay, post_script_delay)
 SCRIPTS = [
-    ("enter_dark_castle.json", 0.25, 4.0),
-    ("menu_okay.json", 0.1, 2.0),
+    ("enter_dark_castle.json", 0.5, 6.0),
+    ("menu_okay.json", 0.01, 2.0),
     ("monkey_setup.json", 0.01, 0.0),
-    ("end_level.json", 0.25, 4.0)
+    ("end_level.json", 0.5, 5.0)
 ]
 
 # 2. Configure the Spacer
@@ -27,9 +27,9 @@ spacer_entry = [("SPACER", SPACER_DURATION, 1.0)]
 FILES_TO_RUN = SCRIPTS[0:SPACER_LOCATION] + spacer_entry + SCRIPTS[SPACER_LOCATION:]
 
 # ========== General Settings ==============
-REPEAT_COUNT = 1
+REPEAT_COUNT = 20
 MOVE_DURATION = 0.01  # For mouse movements
-BUTTON_HOLD_TIME = 0.1 # Only used for Legacy 'click'/'press' commands
+BUTTON_HOLD_TIME = 0.01 # Only used for Legacy 'click'/'press' commands
 # ==========================================
 
 def run_spacer(duration, interval=1.0):
