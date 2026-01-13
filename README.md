@@ -11,10 +11,10 @@ $ pip install -r requirements.txt
 3. Enter `STOP` in terminal when completed and it will save the script to the /scripts folder
 
 **For a BTD6 xp farm you will typically record 4 scripts:**
-    1. A script for entering the map from the home screen
-    2. A script for pressing okay on the "deflation explanation" map
-    3. A script for setting up your towers and starting the map
-    4. A script for exiting the level once finished
+1. A script for entering the map from the home screen
+2. A script for pressing okay on the "deflation explanation" map
+3. A script for setting up your towers and starting the map
+4. A script for exiting the level once finished
 
 ### CONFIGURING YOUR MACRO RUNNER
 At the top of `macro_runner.py` are configurable settings:
