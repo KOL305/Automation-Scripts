@@ -19,7 +19,7 @@ SCRIPTS = [
 ]
 
 # 2. Configure the Spacer
-SPACER_DURATION = 325  # Total time in seconds
+SPACER_DURATION = 360  # Total time in seconds
 SPACER_LOCATION = 3    # Index to insert spacer
 
 # 3. Build the FILES_TO_RUN list dynamically
@@ -27,7 +27,7 @@ spacer_entry = [("SPACER", SPACER_DURATION, 1.0)]
 FILES_TO_RUN = SCRIPTS[0:SPACER_LOCATION] + spacer_entry + SCRIPTS[SPACER_LOCATION:]
 
 # ========== General Settings ==============
-REPEAT_COUNT = 20
+REPEAT_COUNT = 30
 MOVE_DURATION = 0.01  # For mouse movements
 BUTTON_HOLD_TIME = 0.01 # Only used for Legacy 'click'/'press' commands
 # ==========================================
