@@ -1,4 +1,5 @@
 import pyautogui
+import pydirectinput
 import json
 import time
 import os
@@ -11,15 +12,15 @@ import math
 # 1. Define your standard scripts here
 # Format: ("filename", action_delay, post_script_delay)
 SCRIPTS = [
-    ("btd6_enter_dark_castle.json", 0.25, 4.0),
-    ("btd6_menu_okay.json", 0.1, 2.0),
-    ("btd6_bomb-ninja_deflation_darkcastle_xp.json", 0.01, 0.0),
-    ("btd6_end_level.json", 0.25, 4.0)
+    ("enter_dark_castle.json", 0.25, 4.0),
+    ("menu_okay.json", 0.1, 2.0),
+    ("monkey_setup.json", 0.01, 0.0),
+    ("end_level.json", 0.25, 4.0)
 ]
 
 # 2. Configure the Spacer
 # This will click the middle of the screen every second for this duration.
-SPACER_DURATION = 325  # Total time in seconds
+SPACER_DURATION = 360  # Total time in seconds
 SPACER_LOCATION = 3    # Index to insert spacer (0 is start, 3 is after 3rd script)
 
 # 3. Build the FILES_TO_RUN list dynamically
@@ -32,11 +33,11 @@ REPEAT_COUNT = 1
 
 # How long it takes for the mouse to move to the target (seconds)
 # 0.1 = very fast, 0.0 = instant teleport
-MOVE_DURATION = 0.1
+MOVE_DURATION = 0.01
 
 # How long to physically hold the button down before releasing (seconds)
 # Useful for games that miss clicks if they are too fast.
-BUTTON_HOLD_TIME = 0.01
+BUTTON_HOLD_TIME = 0.1
 # ==========================================
 
 def run_spacer(duration, interval=1.0):
@@ -63,6 +64,9 @@ def run_spacer(duration, interval=1.0):
     print(f"\n    [Spacer] Finished. Total clicks: {clicks}")
 
 def run_script(filename, delay):
+    # Ensure scripts are loaded from the scripts directory
+    filename = os.path.join("scripts", filename) 
+    
     if not os.path.exists(filename):
         print(f"[Error] File not found: {filename}")
         return
@@ -74,31 +78,38 @@ def run_script(filename, delay):
             actions = json.load(f)
 
         for i, act in enumerate(actions):
-            # Move mouse (uses duration from Advanced Settings)
+            # Move mouse (uses pyautogui for the 'duration' smoothing feature)
             pyautogui.moveTo(act['x'], act['y'], duration=MOVE_DURATION)
 
             # --- Handle Clicks ---
             if act['type'] == 'click':
-                # Split into Down/Wait/Up to enforce hold time
+                # Keeping pyautogui for clicks as requested, but splitting for hold time
                 pyautogui.mouseDown(button=act['button'])
                 time.sleep(BUTTON_HOLD_TIME)
                 pyautogui.mouseUp(button=act['button'])
                 print(f"    ({i+1}/{len(actions)}) Clicked {act['button']}")
 
-            # --- Handle Single Key Press ---
+            # --- Handle Single Key Press (Using pydirectinput) ---
             elif act['type'] == 'press':
-                # Split into Down/Wait/Up to enforce hold time
-                pyautogui.keyDown(act['key'])
+                # Using pydirectinput for better game compatibility
+                pydirectinput.keyDown(act['key'])
                 time.sleep(BUTTON_HOLD_TIME)
-                pyautogui.keyUp(act['key'])
+                pydirectinput.keyUp(act['key'])
                 print(f"    ({i+1}/{len(actions)}) Pressed key '{act['key']}'")
 
-            # --- Handle Hotkeys (e.g., Ctrl+C) ---
+            # --- Handle Hotkeys (Using pydirectinput) ---
             elif act['type'] == 'hotkey':
                 keys = act['keys']
-                # Hotkeys are complex to split manually, relying on standard function
-                # but adding a small pause interval if supported, otherwise standard.
-                pyautogui.hotkey(*keys)
+                # pydirectinput requires manual chaining for hotkeys to be reliable
+                for k in keys:
+                    pydirectinput.keyDown(k)
+                
+                time.sleep(BUTTON_HOLD_TIME)
+                
+                # Release in reverse order
+                for k in reversed(keys):
+                    pydirectinput.keyUp(k)
+                    
                 print(f"    ({i+1}/{len(actions)}) Hotkey: {' + '.join(keys)}")
 
             time.sleep(delay)
@@ -109,6 +120,7 @@ def run_script(filename, delay):
         print(f"[Error] An unexpected error occurred: {e}")
 
 def main():
+    # PyDirectInput doesn't have the corner failsafe default, but PyAutoGUI still monitors it.
     pyautogui.FAILSAFE = True
     
     print("=== PyAutoGUI Player ===")
